@@ -1,0 +1,1 @@
+# absolventska_prace_pridavanislov
