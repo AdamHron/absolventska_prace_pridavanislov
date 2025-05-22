@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Přidat slovíčka</title>
+</head>
+<body>
+  <h1>Přidat slovíčko</h1>
+  <form id="slovicko-form">
+    <label>Česky: <input type="text" name="cz" required></label><br>
+    <label>Anglicky: <input type="text" name="en" required></label><br>
+    <label>Výslovnost: <input type="text" name="en_vyslovnost"></label><br>
+    <label>Třída: <input type="number" name="trida" value="9"></label><br>
+    <label>Lekce: <input type="number" name="unit" value="6"></label><br>
+    <label>Podlekce: <input type="text" name="subunit"></label><br>
+    <button type="submit">Přidat</button>
+  </form>
+
+  <p id="vysledek"></p>
+
+  <script>
+    document.getElementById("slovicko-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const slovicko = {
+        cz: form.cz.value,
+        en: form.en.value,
+        en_vyslovnost: form.en_vyslovnost.value,
+        trida: parseInt(form.trida.value),
+        unit: parseInt(form.unit.value),
+        subunit: form.subunit.value
+      };
+
+      const odpoved = await fetch("/pridat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(slovicko)
+      });
+
+      const text = await odpoved.text();
+      document.getElementById("vysledek").textContent = text;
+
+      form.reset(); // smaže formulář po odeslání
+    });
+  </script>
+<script src="script.js"></script>
+</body>
+</html>
